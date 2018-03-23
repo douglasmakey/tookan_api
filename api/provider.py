@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import logging
 import requests
 
@@ -5,11 +8,9 @@ from api.exceptions import Unauthorized, APIError, TransactionErrors
 
 logger = logging.getLogger(__name__)
 
-BASE_URL = 'https://api.tookanapp.com'
-VERSION = 'v2'
-
-
 class APIProvider(object):
+    BASE_URL = 'https://api.tookanapp.com'
+    VERSION = 'v2'
     CONTENT_TYPE = 'application/json; charset=utf-8'
 
     def __init__(self, api_key, user_id):
@@ -48,16 +49,16 @@ class APIProvider(object):
 
         try:
             response = self.do_request(
-                url=self.get_endpoint_url(base_url=BASE_URL, version=VERSION, action=action),
+                url=self.get_endpoint_url(base_url=self.BASE_URL, version=self.VERSION, action=action),
                 headers=self._get_headers(),
                 payload=payload
             )
         except Unauthorized:
             raise
-        else:
-            logger.debug('Response: %s', response)
-            self.validate_response(response)
-            return response
+
+        logger.debug('Response: %s', response)
+        self.validate_response(response)
+        return response
 
     def consume(self, resource, action, payload, with_user=False):
         if with_user:

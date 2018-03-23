@@ -1,6 +1,5 @@
-# encoding=UTF-8
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 
 class APIError(Exception):
     def __init__(self, response, description):

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import logging
 import arrow
 
@@ -18,18 +21,7 @@ class TookanApi(object):
         )
         return cls(api_provider)
 
-    def instance_task(self):
-        return Task(self.api_provider)
-
-    def instance_agent(self):
-        return Agent(self.api_provider)
-
-
-class Task(object):
-    def __init__(self, api_provider):
-        self.api_provider = api_provider
-
-    def create(self, payload, auto_assignment=True):
+    def create_task(self, payload, auto_assignment=True):
 
         # Set init default auto_assignment in false
         payload["auto_assignment"] = "0"
@@ -40,7 +32,7 @@ class Task(object):
 
         return response['data']
 
-    def get(self, job_id=None, order_id=None):
+    def get_task(self, job_id=None, order_id=None):
         # Init Payload
         payload = {}
 
@@ -54,7 +46,7 @@ class Task(object):
         response = self.api_provider.consume(resource='Task', action=action, payload=payload, with_user=True)
         return response['data']
 
-    def get_all(self, job_status, job_type=None, start_date=None,
+    def get_all_tasks(self, job_status, job_type, start_date=None,
                 end_date=None, custom_fields=None, is_pagination=None,
                 requested_page=None, customer_id=None):
 
@@ -81,9 +73,9 @@ class Task(object):
 
         payload = {
             'job_status': job_status,
-            'job_type': job_type or 1,
+            'job_type': job_type,
             'start_date': start_date or str(arrow.now().date()),
-            'end_date': end_date or str(arrow.now().date()),
+            'end_date': end_date or str(arrow.now().replace(days=1).date()),
             'custom_fields': custom_fields or 0,
             'is_pagination': is_pagination or 1,
             'requested_page': requested_page or 1,
@@ -93,7 +85,7 @@ class Task(object):
         response = self.api_provider.consume(resource='Task', action='get_all_tasks', payload=payload)
         return response
 
-    def update(self, job_id, job_status):
+    def update_task(self, job_id, job_status):
         payload = {
             'job_id': job_id,
             'job_status': job_status
@@ -101,17 +93,16 @@ class Task(object):
         response = self.api_provider.consume(resource='Task', action='update_task_status', payload=payload)
         return response['data']
 
-    def delete(self, job_id):
+    def delete_task(self, job_id):
         payload = {'job_id': job_id}
         response = self.api_provider.consume(resource='Task', action='delete_task', payload=payload)
-        return response['data']
+        if response['status'] != 200:
+            return False
+
+        return True
 
 
-class Agent(object):
-    def __init__(self, api_provider):
-        self.api_provider = api_provider
-
-    def get(self, fleet_id=None, team_id=None, tags=None, latitude=None, longitude=None, geofence=None):
+    def get_agents(self, fleet_id=None, team_id=None, tags=None, latitude=None, longitude=None, geofence=None):
         # Set payload
         payload = {
             'team_id': team_id,
