@@ -18,13 +18,13 @@ Instance Task
  
 # Create new Task
 payload = {.....} # Describe your paylaod
-new_task = tookan.create_task(payload)
+new_task = tookan.create_taske(payload)
  
 # Get task by job_id
 get_task = tookan.get_task(job_id=8456122)
  
 # Get all tasks, you can pass different parameters like filter
-all_task = tookan.get_all_tasks(job_status=1)
+all_task = tookan.get_all_tasks(job_status=1, job_type=0)
  
 # Delete task by job_id
 delete = tookan.delete_task(job_id=8465968)
