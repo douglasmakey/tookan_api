@@ -22,6 +22,8 @@ class TookanApi(object):
         return cls(api_provider)
 
     def create_task(self, payload, auto_assignment=True):
+        # REFERENCE: https://tookanapi.docs.apiary.io/#reference/task/create-task
+
 
         # Set init default auto_assignment in false
         payload["auto_assignment"] = "0"
