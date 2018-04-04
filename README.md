@@ -19,7 +19,7 @@ Instance Task
 # Create new Task
 # https://tookanapi.docs.apiary.io/#reference/task/create-task
 payload = {.....} # Describe your paylaod
-new_task = tookan.create_taske(payload)
+new_task = tookan.create_task(payload)
  
 # Get task by job_id
 get_task = tookan.get_task(job_id=8456122)
