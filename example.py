@@ -1,3 +1,5 @@
+import datetime
+
 from api import TookanApi
 
 
@@ -16,7 +18,7 @@ payload = {
   "job_pickup_address": "114, sansome street, San Francisco",
   "job_pickup_latitude": "30.7188978",
   "job_pickup_longitude": "76.810296",
-  "job_pickup_datetime":"2018-03-23", # Add Today or date in the future.
+  "job_pickup_datetime":str(datetime.date.today()), # Add Today or date in the future.
   "auto_assignment": "0",
   "has_pickup": "1",
   "has_delivery": "0",

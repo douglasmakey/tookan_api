@@ -42,7 +42,7 @@ class APIProvider(object):
             raise TransactionErrors(response)
 
     def request_resource(self, resource, action, payload):
-        logger.debug('Resource: %s', resource)
+        logger.debug('Resource: {0} action: {1}'.format(resource, action))
 
         # Set api_key
         payload['api_key'] = self.api_key

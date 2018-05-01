@@ -10,6 +10,11 @@ logger = logging.getLogger(__name__)
 
 
 class TookanApi(object):
+    
+    # Resources
+    TASK = 'Task'
+    AGENT = 'Agent'
+
     def __init__(self, api_provider):
         self.api_provider = api_provider
 
@@ -30,7 +35,7 @@ class TookanApi(object):
         if auto_assignment:
             payload["auto_assignment"] = "1"
 
-        response = self.api_provider.consume(resource='Task', action='create_task', payload=payload)
+        response = self.api_provider.consume(resource=TASK, action='create_task', payload=payload)
 
         return response['data']
 
@@ -45,7 +50,7 @@ class TookanApi(object):
             payload['order_id'] = order_id
             action = 'get_task_details_by_order_id'
 
-        response = self.api_provider.consume(resource='Task', action=action, payload=payload, with_user=True)
+        response = self.api_provider.consume(resource=TASK, action=action, payload=payload, with_user=True)
         return response['data']
 
     def get_all_tasks(self, job_status, job_type, start_date=None,
@@ -84,7 +89,7 @@ class TookanApi(object):
             'customer_id': customer_id or ""
         }
 
-        response = self.api_provider.consume(resource='Task', action='get_all_tasks', payload=payload)
+        response = self.api_provider.consume(resource=TASK, action='get_all_tasks', payload=payload)
         return response
 
     def update_task(self, job_id, job_status):
@@ -92,12 +97,12 @@ class TookanApi(object):
             'job_id': job_id,
             'job_status': job_status
         }
-        response = self.api_provider.consume(resource='Task', action='update_task_status', payload=payload)
+        response = self.api_provider.consume(resource=TASK, action='update_task_status', payload=payload)
         return response['data']
 
     def delete_task(self, job_id):
         payload = {'job_id': job_id}
-        response = self.api_provider.consume(resource='Task', action='delete_task', payload=payload)
+        response = self.api_provider.consume(resource=TASK, action='delete_task', payload=payload)
         if response['status'] != 200:
             return False
 
@@ -120,5 +125,5 @@ class TookanApi(object):
         else:
             action = 'get_available_agents?fleet_id={0}'.format(fleet_id)
 
-        response = self.api_provider.consume(resource='Agent', action=action, payload=payload)
+        response = self.api_provider.consume(resource=AGENT, action=action, payload=payload)
         return response['data']
